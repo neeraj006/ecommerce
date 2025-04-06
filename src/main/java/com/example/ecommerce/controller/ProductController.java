@@ -1,7 +1,7 @@
 package com.example.ecommerce.controller;
 
 
-import com.example.ecommerce.model.Product;
+import com.example.ecommerce.config.AppConstants;
 import com.example.ecommerce.payload.ProductDTO;
 import com.example.ecommerce.payload.ProductResponse;
 import com.example.ecommerce.service.ProductService;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 
 @RestController
@@ -34,9 +33,12 @@ public class ProductController {
     }
 
     @GetMapping("/public/products")
-    public ResponseEntity<ProductResponse> getAllProducts() {
+    public ResponseEntity<ProductResponse> getAllProducts(@RequestParam(name="PageNumber" , defaultValue = AppConstants.PAGE_NUMBER , required = false) Integer pageNumber,
+                                                          @RequestParam(name="PageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize  ,
+                                                          @RequestParam(name="sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy ,
+                                                            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder) {
 
-        ProductResponse productResponse = productService.getAllProducts();
+        ProductResponse productResponse = productService.getAllProducts(pageNumber,pageSize,sortBy,sortOrder);
 
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
 
